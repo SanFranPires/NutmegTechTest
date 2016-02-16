@@ -1,4 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="testAll">
+	<test name="Configuration Tests">
+		<classes>
+			<class name="com.nutmeg.techtest.catify.application.ConfigurationTest" />
+		</classes>
+	</test>
 </suite>
