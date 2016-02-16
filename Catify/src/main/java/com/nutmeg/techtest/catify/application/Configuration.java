@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
-
 @SuppressWarnings("serial")
 public class Configuration extends Properties {
 	private String fileCommand;
@@ -90,14 +88,11 @@ public class Configuration extends Properties {
 	}
 	
 	public void loadFromResourceFile(String resourceFile) throws IOException {
-		InputStream is = getClass().getClassLoader().getResourceAsStream(resourceFile);
-		try {
+		try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourceFile)) {
 			if (is == null) {
 				throw new FileNotFoundException(MessageFormat.format("Resource file {0} could not be found", resourceFile));
 			}
 			load(is);
-		} finally {
-			IOUtils.closeQuietly(is);
 		}
 	}
 	
