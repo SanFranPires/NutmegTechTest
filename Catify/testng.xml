@@ -13,6 +13,7 @@
 			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.CatCategoriesResponseProcessorTest" />
 			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.CatFactResponseProcessorTest" />
 			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.StreamCopyResponseProcessorTest" />
+			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.WebGetRequestProcessorTest" />
 		</classes>
 	</test>
 </suite>
