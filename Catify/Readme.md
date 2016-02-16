@@ -25,7 +25,7 @@ Running the packaging command with create the file **Catify-1.0.0-jar-with-depen
 Usage 
 -----
 
-**java -jar Catify-1.0.0-jar-with-dependencies.jar [ file | categories | fact ]
+**java -jar Catify-1.0.0-jar-with-dependencies.jar [ file | categories | fact ]**
 
 Author
 ======
