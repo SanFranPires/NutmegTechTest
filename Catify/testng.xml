@@ -7,4 +7,12 @@
 			<class name="com.nutmeg.techtest.catify.application.CliParserTest" />
 		</classes>
 	</test>
+	<test name="Processor Tests">
+		<classes>
+			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.CatFileResponseProcessorTest" />
+			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.CatCategoriesResponseProcessorTest" />
+			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.CatFactResponseProcessorTest" />
+			<class name="com.nutmeg.techtest.catify.apiprocessors.impl.StreamCopyResponseProcessorTest" />
+		</classes>
+	</test>
 </suite>
