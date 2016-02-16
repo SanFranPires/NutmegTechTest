@@ -9,10 +9,18 @@ public class ConfigurationTest {
 	private static final String FileKey = "cli.action.file";
 	private static final String CategoriesKey = "cli.action.categories";
 	private static final String FactKey = "cli.action.fact";
+	private static final String CatApiKeyQueryParameterKey = "catapi.key.queryparameter";
+	private static final String CatApiFileUrlKey = "catapi.file.url";
+	private static final String CatApiCategoriesUrlKey = "catapi.categories.url";
+	private static final String CatFactsUrlKey = "catfacts.url";
 	
 	private static final String FileValue = "file";
 	private static final String CategoriesValue = "categories";
 	private static final String FactValue = "fact";
+	private static final String CatApiKeyQueryParameterValue = "api_key=NjY5NDI";
+	private static final String CatApiFileUrlValue = "http://thecatapi.com/api/images/get?format=xml&results_per_page=1";
+	private static final String CatApiCategoriesUrlValue = "http://thecatapi.com/api/categories/list";
+	private static final String CatFactsUrlValue = "http://catfacts-api.appspot.com/api/facts?number=1";
 	
 	private static final String PropertiesFile = "config.properties";
 	
@@ -21,7 +29,11 @@ public class ConfigurationTest {
 	public void testFileConfigurationMissingThrowsException() {
 		initialiseConfiguration(new String[][]{
 			{ CategoriesKey, CategoriesValue },
-			{ FactKey, FactValue }
+			{ FactKey, FactValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
 		});
 	}
 	
@@ -29,7 +41,11 @@ public class ConfigurationTest {
 	public void testCategoriesConfigurationMissingThrowsException() {
 		initialiseConfiguration(new String[][]{
 			{ FileKey, FileValue },
-			{ FactKey, FactValue }
+			{ FactKey, FactValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
 		});
 	}
 	
@@ -37,7 +53,59 @@ public class ConfigurationTest {
 	public void testFactConfigurationMissingThrowsException() {
 		initialiseConfiguration(new String[][]{
 			{ FileKey, FileValue },
-			{ CategoriesKey, CategoriesValue }
+			{ CategoriesKey, CategoriesValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
+		});
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testCatApiKeyConfigurationMissingThrowsException() {
+		initialiseConfiguration(new String[][]{
+			{ FileKey, FileValue },
+			{ CategoriesKey, CategoriesValue },
+			{ FactKey, FactValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
+		});
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testCatFileUrlConfigurationMissingThrowsException() {
+		initialiseConfiguration(new String[][]{
+			{ FileKey, FileValue },
+			{ CategoriesKey, CategoriesValue },
+			{ FactKey, FactValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
+		});
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testCatCategoriesUrlConfigurationMissingThrowsException() {
+		initialiseConfiguration(new String[][]{
+			{ FileKey, FileValue },
+			{ CategoriesKey, CategoriesValue },
+			{ FactKey, FactValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
+		});
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testCatFactsUrlConfigurationMissingThrowsException() {
+		initialiseConfiguration(new String[][]{
+			{ FileKey, FileValue },
+			{ CategoriesKey, CategoriesValue },
+			{ FactKey, FactValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue }
 		});
 	}
 	
@@ -46,13 +114,33 @@ public class ConfigurationTest {
 		Configuration configuration = initialiseConfiguration(new String[][]{
 			{ FileKey, FileValue },
 			{ CategoriesKey, CategoriesValue },
-			{ FactKey, FactValue }
+			{ FactKey, FactValue },
+			{ CatApiKeyQueryParameterKey, CatApiKeyQueryParameterValue },
+			{ CatApiFileUrlKey, CatApiFileUrlValue },
+			{ CatApiCategoriesUrlKey, CatApiCategoriesUrlValue },
+			{ CatFactsUrlKey, CatFactsUrlValue }
 		});
 		
 		Assert.assertEquals(configuration.getFileCommand(), FileValue);
 		Assert.assertEquals(configuration.getCategoriesCommand(), CategoriesValue);
 		Assert.assertEquals(configuration.getFactCommand(), FactValue);
+		Assert.assertEquals(configuration.getCatApiKeyQueryParameter(), CatApiKeyQueryParameterValue);
+		Assert.assertEquals(configuration.getCatFileUrl(), CatApiFileUrlValue);
+		Assert.assertEquals(configuration.getCatCategoryUrl(), CatApiCategoriesUrlValue);
+		Assert.assertEquals(configuration.getCatFactUrl(), CatFactsUrlValue);
+		
 		Assert.assertTrue(configuration.isInitialised());
+	}
+	
+	@Test
+	public void testConfigurationCreatingCorrectAuthenticatedCatFileUrl() {
+		Configuration configuration = new Configuration();
+		configuration.setCatFileUrl("leftSide");
+		configuration.setCatApiKeyQueryParameter("rightSide");
+		
+		Assert.assertEquals(
+				configuration.getCatFileUrlWithApiKey(),
+				configuration.getCatFileUrl() + "&" + configuration.getCatApiKeyQueryParameter());
 	}
 
 	@Test(expectedExceptions = IOException.class)
@@ -75,6 +163,11 @@ public class ConfigurationTest {
 		Assert.assertEquals(configuration.getFileCommand(), FileValue);
 		Assert.assertEquals(configuration.getCategoriesCommand(), CategoriesValue);
 		Assert.assertEquals(configuration.getFactCommand(), FactValue);
+		Assert.assertEquals(configuration.getCatApiKeyQueryParameter(), CatApiKeyQueryParameterValue);
+		Assert.assertEquals(configuration.getCatFileUrl(), CatApiFileUrlValue);
+		Assert.assertEquals(configuration.getCatCategoryUrl(), CatApiCategoriesUrlValue);
+		Assert.assertEquals(configuration.getCatFactUrl(), CatFactsUrlValue);
+		
 		Assert.assertTrue(configuration.isInitialised());
 	}
 	

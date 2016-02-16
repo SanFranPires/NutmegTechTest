@@ -14,6 +14,11 @@ public class Configuration extends Properties {
 	private String categoriesCommand;
 	private String factCommand;
 	
+	private String catApiKeyQueryParameter;
+	private String catFileUrl;
+	private String catCategoryUrl;
+	private String catFactUrl;
+
 	private boolean initialised = false;
 
 	public String getFileCommand() {
@@ -38,6 +43,42 @@ public class Configuration extends Properties {
 
 	public void setFactCommand(String factCommand) {
 		this.factCommand = factCommand;
+	}
+	
+	public String getCatApiKeyQueryParameter() {
+		return catApiKeyQueryParameter;
+	}
+
+	public void setCatApiKeyQueryParameter(String catApiKeyQueryParameter) {
+		this.catApiKeyQueryParameter = catApiKeyQueryParameter;
+	}
+
+	public String getCatFileUrl() {
+		return catFileUrl;
+	}
+	
+	public String getCatFileUrlWithApiKey() {
+		return getCatFileUrl() + "&" + getCatApiKeyQueryParameter();
+	}
+
+	public void setCatFileUrl(String catFileUrl) {
+		this.catFileUrl = catFileUrl;
+	}
+
+	public String getCatCategoryUrl() {
+		return catCategoryUrl;
+	}
+
+	public void setCatCategoryUrl(String catCategoryUrl) {
+		this.catCategoryUrl = catCategoryUrl;
+	}
+
+	public String getCatFactUrl() {
+		return catFactUrl;
+	}
+
+	public void setCatFactUrl(String catFactUrl) {
+		this.catFactUrl = catFactUrl;
 	}
 
 	public boolean isInitialised() {
@@ -64,6 +105,11 @@ public class Configuration extends Properties {
 		fileCommand = getProperty("cli.action.file");
 		categoriesCommand = getProperty("cli.action.categories");
 		factCommand = getProperty("cli.action.fact");
+		
+		catApiKeyQueryParameter = getProperty("catapi.key.queryparameter");
+		catFileUrl = getProperty("catapi.file.url");
+		catCategoryUrl = getProperty("catapi.categories.url");
+		catFactUrl = getProperty("catfacts.url");
 		
 		initialised = true;
 	}
