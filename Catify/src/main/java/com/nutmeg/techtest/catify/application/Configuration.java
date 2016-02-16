@@ -13,6 +13,8 @@ public class Configuration extends Properties {
 	private String fileCommand;
 	private String categoriesCommand;
 	private String factCommand;
+	
+	private boolean initialised = false;
 
 	public String getFileCommand() {
 		return fileCommand;
@@ -37,6 +39,10 @@ public class Configuration extends Properties {
 	public void setFactCommand(String factCommand) {
 		this.factCommand = factCommand;
 	}
+
+	public boolean isInitialised() {
+		return initialised;
+	}
 	
 	public void loadFromResourceFile() throws IOException {
 		loadFromResourceFile("config.properties");
@@ -58,6 +64,8 @@ public class Configuration extends Properties {
 		fileCommand = getProperty("cli.action.file");
 		categoriesCommand = getProperty("cli.action.categories");
 		factCommand = getProperty("cli.action.fact");
+		
+		initialised = true;
 	}
 	
 	public String getProperty(String propertyName) {

@@ -52,12 +52,18 @@ public class ConfigurationTest {
 		Assert.assertEquals(configuration.getFileCommand(), FileValue);
 		Assert.assertEquals(configuration.getCategoriesCommand(), CategoriesValue);
 		Assert.assertEquals(configuration.getFactCommand(), FactValue);
+		Assert.assertTrue(configuration.isInitialised());
 	}
 
 	@Test(expectedExceptions = IOException.class)
 	public void testConfigurationLoadingNonExistingPropertiesFileThrowsException() throws IOException {
 		Configuration configuration = new Configuration();
-		configuration.loadFromResourceFile("nonexisting." + PropertiesFile);
+		try {
+			configuration.loadFromResourceFile("nonexisting." + PropertiesFile);
+		} catch (IOException ex) {
+			Assert.assertFalse(configuration.isInitialised());
+			throw ex;
+		}
 	}
 	
 	@Test
@@ -69,6 +75,7 @@ public class ConfigurationTest {
 		Assert.assertEquals(configuration.getFileCommand(), FileValue);
 		Assert.assertEquals(configuration.getCategoriesCommand(), CategoriesValue);
 		Assert.assertEquals(configuration.getFactCommand(), FactValue);
+		Assert.assertTrue(configuration.isInitialised());
 	}
 	
 	private Configuration initialiseConfiguration(String[][] keyValues) {
@@ -76,7 +83,13 @@ public class ConfigurationTest {
 		for (String[] keyValue : keyValues) {
 			configuration.setProperty(keyValue[0], keyValue[1]);
 		}
-		configuration.initialise();
+		try {
+			configuration.initialise();
+		} catch (IllegalArgumentException ex) {
+			Assert.assertFalse(configuration.isInitialised());
+			throw ex;
+		}
+		Assert.assertTrue(configuration.isInitialised());
 		return configuration;
 	}
 }
