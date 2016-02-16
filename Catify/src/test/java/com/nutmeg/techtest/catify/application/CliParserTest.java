@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.nutmeg.techtest.catify.application.CliParser.Action;
+
 public class CliParserTest {
 	
 	private Configuration defaultConfiguration;
@@ -54,25 +56,29 @@ public class CliParserTest {
 	@Test
 	public void testParseWithZeroArgumentsReturnsFileAction() {
 		CliParser parser = initialiseParser(defaultConfiguration);
-		parser.parse(new String[0]);
+		Action action = parser.parse(new String[0]);
+		Assert.assertEquals(action, Action.File);
 	}
 	
 	@Test
 	public void testParseWithFileArgumentReturnsFileAction() {
 		CliParser parser = initialiseParser(defaultConfiguration);
-		parser.parse(new String[] { defaultConfiguration.getFileCommand() });
+		Action action = parser.parse(new String[] { defaultConfiguration.getFileCommand() });
+		Assert.assertEquals(action, Action.File);
 	}
 	
 	@Test
 	public void testParseWithCategoriesArgumentReturnsCategoriesAction() {
 		CliParser parser = initialiseParser(defaultConfiguration);
-		parser.parse(new String[] { defaultConfiguration.getCategoriesCommand() });
+		Action action = parser.parse(new String[] { defaultConfiguration.getCategoriesCommand() });
+		Assert.assertEquals(action, Action.Categories);
 	}
 	
 	@Test
 	public void testParseWithFactArgumentReturnsFactAction() {
 		CliParser parser = initialiseParser(defaultConfiguration);
-		parser.parse(new String[] { defaultConfiguration.getFactCommand() });
+		Action action = parser.parse(new String[] { defaultConfiguration.getFactCommand() });
+		Assert.assertEquals(action, Action.Fact);
 	}
 	
 	private CliParser initialiseParser(Configuration configuration) {
